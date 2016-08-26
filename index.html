@@ -1,0 +1,151 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Minesweeper</title>
+    <link rel="icon" type="image/ico" href="images/mine.png">
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+
+    html {
+    	  background: url('images/bg.jpg') no-repeat center center fixed; 
+    }
+    body {
+		font-family: 'Press Start 2P', cursive;
+		font-weight:200;
+	   	color:white;
+	   	text-align:center;
+    }
+    #container {
+    	margin: 0 auto;
+    	text-align:center;
+    	align-items: center;
+    }
+
+    #minesweeper {
+    	width:152px;
+    	height:152px;
+    	margin: auto;
+	    }
+
+    td {
+    	width:50px;
+    	height:50px;
+    	border:1px solid black;
+    	background-color:white;
+    }
+    
+    #button {
+    	padding:10px;
+    	margin:30px;
+    }
+
+    #imagediv img {
+    	padding:5px;
+    	width:50px;
+    	border:none;
+    }
+
+    </style>
+</head>
+
+<body>
+<div id="container">
+	<h1>Minesweeper</h1> <br />
+	<h3 id="text">Click anywhere on the grid to begin.</h3>
+	<div id="imagediv"></div>
+	<table id="minesweeper">
+		<tr>
+			<td id="sq1" onclick="sq(this.id)"></td>
+			<td id="sq2" onclick="sq(this.id)"></td>
+			<td id="sq3" onclick="sq(this.id)"></td>
+		</tr>
+		<tr>
+			<td id="sq4" onclick="sq(this.id)"></td>
+			<td id="sq5" onclick="sq(this.id)"></td>
+			<td id="sq6" onclick="sq(this.id)"></td>
+		</tr>
+		<tr>
+			<td id="sq7" onclick="sq(this.id)"></td>
+			<td id="sq8" onclick="sq(this.id)"></td>
+			<td id="sq9" onclick="sq(this.id)"></td>
+		</tr>
+	</table>
+	<button id="button" onclick="reset()">Reset Game</button>
+	<footer>&copy;</footer>
+</div>
+
+	<script type="text/javascript">
+	var x;
+	var rand;
+	var count;
+	var dead;
+
+	//Initialise all variables here.
+	function init() {
+		x = Math.random();
+		//We want to get a random number between 1 and 9
+		x *= 9;
+		x = Math.floor(x);
+		if (x == 10) {
+			x = x - 1;
+		}
+		rand = "sq"+(x+1);
+		count = 0;
+		dead = false;
+		console.log(rand);
+		}
+
+	init();
+	
+
+	function sq(id) {
+		if (rand == id) {
+			document.getElementById(id).style.backgroundImage="url('images/mine.png')";
+			document.getElementById(id).style.backgroundPosition="center";
+            document.getElementById(id).style.backgroundRepeat="no-repeat";
+            dead = true;
+
+		}
+		else {
+			if (document.getElementById(id).style.backgroundColor != "lightblue") {
+				count +=1;
+			}
+			//change to pink
+			document.getElementById(id).style.backgroundColor="lightblue";
+			if (count == 8)
+			{
+				//User has clicked on all boxes except the one having the Mine.
+            	alert("You escape.. This time..");
+            	reset();
+			}
+
+
+		}
+		if (dead) {
+			document.getElementById("text").innerHTML="You are now dead. Reset game to try again..";
+			document.getElementById("imagediv").innerHTML='<img src="images/skull.png" alt="skull" />';
+ 		}
+	}
+
+	function reset() {
+		var tableId =document.getElementById("minesweeper");
+		var tdArray = document.getElementsByTagName("td");
+		for (var i = 0; i < tdArray.length;i++) {
+			var tdElem = tdArray[i];
+			tdElem.style.backgroundColor="white";
+			tdElem.style.backgroundImage="";
+		}
+		document.getElementById("text").innerHTML="Click anywhere on the grid to begin.";
+		document.getElementById("imagediv").innerHTML='';
+
+		//reset count and get a random number again.
+		init();
+
+	}
+	</script>
+	</body>
+</html>
